@@ -1,0 +1,13 @@
+package trafficlight.ILightMode
+
+const UInt8 ModeRed    = 1;
+const UInt8 ModeYellow = 2;
+const UInt8 ModeGreen  = 4;
+const UInt8 ModeBlink  = 8;
+
+typedef UInt8 DirectionMode;
+typedef array<DirectionMode, 2> CrossedDirectionsMode;
+
+interface {
+    SetMode(in CrossedDirectionsMode mode);
+}

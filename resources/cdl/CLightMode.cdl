@@ -1,0 +1,5 @@
+component trafficlight.CLightMode
+
+endpoints {
+    mode : trafficlight.ILightMode
+}

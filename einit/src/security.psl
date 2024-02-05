@@ -1,0 +1,32 @@
+use nk.base._
+use nk.basic._
+
+execute: kl.core.Execute
+
+use EDL Einit
+use EDL kl.core.Core
+
+use EDL trafficlight.Control
+use EDL trafficlight.GPIO
+use EDL trafficlight.Diagnostics
+use EDL trafficlight.Link
+
+execute {
+    grant ()
+}
+
+request {
+    grant ()
+}
+
+response {
+    grant ()
+}
+
+error {
+    grant ()
+}
+
+security {
+    grant ()
+}

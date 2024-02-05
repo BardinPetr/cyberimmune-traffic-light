@@ -1,0 +1,5 @@
+entity trafficlight.GPIO
+
+components {
+    lightModeGpio: trafficlight.CLightMode
+}
