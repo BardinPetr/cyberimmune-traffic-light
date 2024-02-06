@@ -13,3 +13,5 @@ nk_build_edl_files(
 
 add_executable(GPIO "src/main.cpp")
 add_dependencies(GPIO trafficlight_gpio_edl)
+
+target_link_libraries(GPIO PRIVATE common)

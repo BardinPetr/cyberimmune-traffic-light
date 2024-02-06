@@ -12,3 +12,5 @@ nk_build_edl_files(
 
 add_executable(Control "src/main.cpp")
 add_dependencies(Control control_edl_files)
+
+target_link_libraries(Control PRIVATE common)
