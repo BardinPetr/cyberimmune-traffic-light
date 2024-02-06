@@ -1,0 +1,29 @@
+@startuml
+
+
+usecase "Control office\nCL" as ext #red
+usecase "Communication\nSM" as comm #red
+usecase "Central control\nMM" as ctrl #red
+usecase "Validation\n(KSM)\nSS" as val #yellow
+usecase "GPIO\nSS" as io #lawngreen
+usecase "Diagnostics\nSM" as diag #red
+
+ext --[#red]> comm
+ext <--[#red] comm
+
+comm --[#red]> ctrl
+comm <--[#red] ctrl
+
+ctrl -[#red]> val
+val -[#lawngreen]> io
+
+diag -[#red]> ctrl
+
+legend right
+| Цвет          | Тип                               |#| Обозначение | Сложность|# |Обозначение | Объем |
+| <#lawngreen>  | Доверенный              |#| S | Simple  |#| S|Small|
+| <#red>        | Недоверенный            |#| M | Medium  |#| M|Medium|
+| <#yellow>     | Повышающий целостность  |#| C | Complex |#| L|Large|
+end legend
+
+@enduml
