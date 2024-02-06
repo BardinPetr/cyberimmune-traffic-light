@@ -1,0 +1,52 @@
+use nk.staticmap._
+use nk.hashmap._
+
+// Contains valid combinations of color and blink modes for single trafficlight
+policy object allowedModes : HashSet {
+    type Entry = UInt32
+    config = {
+        set_size : 7,
+        pool_size : 1
+    }
+}
+
+// Contains valid combinations of traffic light pair modes represented as mode UInt32 pairs
+// Due to symmetrical operation of traffic lights, set do not contain inverse order duplicates
+policy object allowedCombinations : HashSet {
+    type Entry = [UInt32,UInt32]
+    config = {
+        set_size : 10,
+        pool_size : 1
+    }
+}
+
+
+// Use initialization of GPIO entity as trigger to set up hashset
+// For resource identifier in set pool GPIO entity SID is used
+execute src=Einit dst=trafficlight.GPIO {
+    // see docs/seq.jpg as source for operation sequence
+    // first element is master, second - slave trafficlight
+    allowedCombinations.init {sid : dst_sid}
+    allowedCombinations.add {sid : dst_sid, entry : [0x04, 0x01]} // green          | red
+    allowedCombinations.add {sid : dst_sid, entry : [0x14, 0x01]} // blink green    | red
+    allowedCombinations.add {sid : dst_sid, entry : [0x02, 0x01]} // yellow         | red
+    allowedCombinations.add {sid : dst_sid, entry : [0x01, 0x01]} // red            | red
+    allowedCombinations.add {sid : dst_sid, entry : [0x01, 0x03]} // red            | red + yellow
+    allowedCombinations.add {sid : dst_sid, entry : [0x12, 0x12]} // all in maintenance
+    allowedCombinations.add {sid : dst_sid, entry : [0x00, 0x00]} // all off
+
+    grant()
+}
+
+request
+    src=trafficlight.Control,
+    dst=trafficlight.GPIO,
+    component=trafficlight.CLightMode,
+    interface=trafficlight.ILightMode,
+    method=SetMode {
+
+    assert(
+        allowedCombinations.contains {sid : dst_sid, entry : [message.mode.dir0, message.mode.dir1]} ||
+        allowedCombinations.contains {sid : dst_sid, entry : [message.mode.dir1, message.mode.dir0]}
+    )
+}

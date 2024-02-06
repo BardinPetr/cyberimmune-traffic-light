@@ -2,7 +2,7 @@ project(control)
 
 include(platform/nk)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 
 nk_build_edl_files(
         control_edl_files
@@ -11,6 +11,6 @@ nk_build_edl_files(
 )
 
 add_executable(Control "src/main.cpp")
-add_dependencies(Control control_edl_files)
+add_dependencies(Control control_edl_files trafficlight_idl)
 
 target_link_libraries(Control PRIVATE common)

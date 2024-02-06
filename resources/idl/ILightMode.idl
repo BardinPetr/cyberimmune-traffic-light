@@ -1,12 +1,29 @@
 package trafficlight.ILightMode
 
-const UInt8 ModeRed    = 1;
-const UInt8 ModeYellow = 2;
-const UInt8 ModeGreen  = 4;
-const UInt8 ModeBlink  = 8;
+typedef UInt32 ModeType;
+const ModeType ModeRed    = 1;
+const ModeType ModeYellow = 2;
+const ModeType ModeGreen  = 4;
+const ModeType ModeBlink  = 16;
 
-typedef UInt8 DirectionMode;
-typedef array<DirectionMode, 2> CrossedDirectionsMode;
+/*
+struct DirectionColor {
+    UInt8 r;
+    UInt8 y;
+    UInt8 g;
+}
+struct DirectionMode {
+    UInt8 color;
+    UInt8 blink;
+}
+*/
+
+typedef ModeType DirectionMode;
+
+struct CrossedDirectionsMode {
+    DirectionMode dir0;
+    DirectionMode dir1;
+}
 
 interface {
     SetMode(in CrossedDirectionsMode mode);
