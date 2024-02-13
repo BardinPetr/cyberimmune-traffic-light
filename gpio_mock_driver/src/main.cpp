@@ -1,26 +1,16 @@
 #include <coresrv/sl/sl_api.h>
 #include <coresrv/nk/transport-kos.h>
-#include <rtl/string.h>
 #include "trafficlight/GPIO.edl.h"
-#include "../../common/include/log.hpp"
+#include "trafficlight/ILightMode.idl.h"
+#include "log.hpp"
 #include "mode.h"
 
-static nk_err_t SetMode_impl(
-        struct trafficlight_ILightMode *self,
-        const struct trafficlight_ILightMode_SetMode_req *req,
-        const struct nk_arena *reqArena,
-        struct trafficlight_ILightMode_SetMode_res *res,
-        struct nk_arena *resArena) {
-
-    L::info("New SetMode request: {}  {}",
-            mode_to_string(req->mode.dir0),
-            mode_to_string(req->mode.dir1));
-
-//    const char *test = "Hello world!";
-//    rtl_size_t sl = rtl_strlen(test) + 1;
-//    nk_char_t *ptr = nk_arena_alloc(nk_char_t, resArena, &res->si, sl);
-//    rtl_strncpy((char *) ptr, test, sl);
-
+nk_err_t SetMode_impl(
+        trafficlight_ILightMode *self,
+        const trafficlight_ILightMode_SetMode_req *req,
+        const nk_arena *reqArena,
+        trafficlight_ILightMode_SetMode_res *res,
+        nk_arena *resArena) {
     return NK_EOK;
 }
 

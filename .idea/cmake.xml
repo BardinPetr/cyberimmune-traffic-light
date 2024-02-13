@@ -2,7 +2,7 @@
 <project version="4">
   <component name="CMakeSharedSettings">
     <configurations>
-      <configuration PROFILE_NAME="KOS-Docker" ENABLED="true" GENERATION_DIR="build" CONFIG_NAME="Debug" TOOLCHAIN_NAME="KOS-Docker" GENERATION_OPTIONS="-DCMAKE_INSTALL_PREFIX:STRING=$CMakeProjectDir$/install -DCMAKE_FIND_ROOT_PATH=/sysroot-aarch64-kos -DCMAKE_TOOLCHAIN_FILE=/opt/KasperskyOS-Community-Edition-1.1.1.40/toolchain/share/toolchain-aarch64-kos.cmake" GENERATION_PASS_SYSTEM_ENVIRONMENT="false">
+      <configuration PROFILE_NAME="KOS-Docker" ENABLED="true" GENERATION_DIR="build" CONFIG_NAME="Debug" TOOLCHAIN_NAME="KOS-Docker" GENERATION_OPTIONS="-DCMAKE_INSTALL_PREFIX:STRING=$CMakeProjectDir$/install -DCMAKE_FIND_ROOT_PATH=/sysroot-aarch64-kos -DCMAKE_TOOLCHAIN_FILE=/opt/KasperskyOS-Community-Edition-1.1.1.40/toolchain/share/toolchain-aarch64-kos.cmake" GENERATION_PASS_SYSTEM_ENVIRONMENT="false" BUILD_OPTIONS="-- -j 8">
         <ADDITIONAL_GENERATION_ENVIRONMENT>
           <envs>
             <env name="PATH" value="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/KasperskyOS-Community-Edition-1.1.1.40/toolchain/bin" />

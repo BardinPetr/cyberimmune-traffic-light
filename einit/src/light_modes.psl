@@ -1,14 +1,4 @@
-use nk.staticmap._
 use nk.hashmap._
-
-// Contains valid combinations of color and blink modes for single trafficlight
-policy object allowedModes : HashSet {
-    type Entry = UInt32
-    config = {
-        set_size : 7,
-        pool_size : 1
-    }
-}
 
 // Contains valid combinations of traffic light pair modes represented as mode UInt32 pairs
 // Due to symmetrical operation of traffic lights, set do not contain inverse order duplicates

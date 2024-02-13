@@ -6,17 +6,11 @@ const ModeType ModeYellow = 2;
 const ModeType ModeGreen  = 4;
 const ModeType ModeBlink  = 16;
 
-/*
 struct DirectionColor {
     UInt8 r;
     UInt8 y;
     UInt8 g;
 }
-struct DirectionMode {
-    UInt8 color;
-    UInt8 blink;
-}
-*/
 
 typedef ModeType DirectionMode;
 

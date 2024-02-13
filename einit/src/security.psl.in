@@ -11,7 +11,7 @@ use EDL trafficlight.GPIO
 use EDL trafficlight.Diagnostics
 use EDL trafficlight.Link
 
-use light_modes._
+/*use light_modes._*/
 
 execute {
     match src=kl.core.Core {
@@ -22,6 +22,8 @@ execute {
 }
 
 request dst=kl.core.Core { grant() }
+
+request { grant() }
 
 error { grant() }
 

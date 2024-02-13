@@ -1,10 +1,15 @@
 project(common)
 
-set(CMAKE_CXX_STANDARD 11)
+include(platform/nk)
 
-file(GLOB SRC CONFIGURE_DEPENDS "**/*.cpp" "../include/*.hpp")
-include_directories("../include")
+include_directories("../include" "./include")
 
-add_library(common ${SRC})
+add_library(common ${SRC}
+        src/log.cpp
+        include/NkArena.hpp
+        src/trafficlight/ILightMode.idl.cpp
+        include/ILightMode.idl.hpp)
+
+add_dependencies(common trafficlight_gpio_edl trafficlight_idl)
 
 target_link_libraries(common PUBLIC spdlog::spdlog)
