@@ -1,7 +1,12 @@
 package trafficlight.IDiagnostics
 
-import trafficlight.ILightMode
+struct DirectionColor {
+    UInt8 r;
+    UInt8 y;
+    UInt8 g;
+}
 
+typedef UInt32 ModeType;
 typedef UInt32 MeasuredCurrent;
 typedef sequence<MeasuredCurrent, 3> LightsMeasuredCurrent;
 

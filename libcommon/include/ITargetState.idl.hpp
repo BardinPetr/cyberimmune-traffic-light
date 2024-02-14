@@ -4,13 +4,17 @@
 */
 #ifndef TRAFFICLIGHT_ITARGETSTATE_IDL_HPP
 #define TRAFFICLIGHT_ITARGETSTATE_IDL_HPP
+
 #include <coresrv/sl/sl_api.h>
 #include <coresrv/nk/transport-kos.h>
 #include <vector>
-#include "trafficlight/ITargetState.idl.h"
 #include "XNkArena.hpp"
+#include "ITargetState.idl.hpp"
+#include "trafficlight/Diagnostics.edl.h"
+
 namespace trafficlight {
     using std::vector;
+
     class ITargetState {
     private:
         NkKosTransport *transport;
@@ -18,17 +22,19 @@ namespace trafficlight {
         XNkArena<trafficlight_ITargetState_req_arena_size> reqArena;
         XNkArena<trafficlight_ITargetState_res_arena_size> resArena;
     public:
-    
+
         using ModeType = nk_uint32_t;
-    
+
         struct NotifyCurrentStateResponse {
             nk_err_t status;
-        
-        };
-        ITargetState(NkKosTransport *transport, nk_iid_t riid);
-        ITargetState(NkKosTransport *transport, const char* endpoint_name);
 
-        const trafficlight_ITargetState_NotifyCurrentState_res* NotifyCurrentState(nk_uint8_t id, nk_uint32_t mode);
+        };
+
+        ITargetState(NkKosTransport *transport, nk_iid_t riid);
+
+        ITargetState(NkKosTransport *transport, const char *endpoint_name);
+
+        const trafficlight_ITargetState_NotifyCurrentState_res *NotifyCurrentState(nk_uint8_t id, nk_uint32_t mode);
     };
 };
 #endif //TRAFFICLIGHT_ITARGETSTATE_IDL_HPP

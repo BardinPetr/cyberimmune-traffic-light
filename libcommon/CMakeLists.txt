@@ -15,6 +15,6 @@ add_library(libcommon
         include/mode.hpp
 )
 
-add_dependencies(libcommon trafficlight_gpio_edl trafficlight_idl)
+add_dependencies(libcommon trafficlight_gpio_edl diagnostics_edl_files control_edl_files trafficlight_idl)
 
 target_link_libraries(libcommon PUBLIC spdlog::spdlog libxnk)
