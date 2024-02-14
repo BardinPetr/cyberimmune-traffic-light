@@ -1,0 +1,5 @@
+component trafficlight.CTargetState
+
+endpoints {
+    stateInput : trafficlight.ITargetState
+}

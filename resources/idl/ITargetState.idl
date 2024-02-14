@@ -1,0 +1,7 @@
+package trafficlight.ITargetState
+
+import trafficlight.ILightMode
+
+interface {
+    NotifyCurrentState(in UInt8 id, in ModeType mode);
+}

@@ -1,0 +1,11 @@
+package trafficlight.IDiagnostics
+
+import trafficlight.ILightMode
+
+typedef UInt32 MeasuredCurrent;
+typedef array<MeasuredCurrent, 3> LightsMeasuredCurrent;
+
+interface {
+    NotifyFailure(in string<20> severity, in UInt8 id, in ModeType requested, in DirectionColor problem);
+    NotifyState(in UInt8 id, in LightsMeasuredCurrent measured);
+}

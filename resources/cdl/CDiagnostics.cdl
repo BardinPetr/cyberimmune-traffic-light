@@ -1,0 +1,5 @@
+component trafficlight.CDiagnostics
+
+endpoints {
+    diag : trafficlight.IDiagnostics
+}

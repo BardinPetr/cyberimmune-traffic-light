@@ -16,4 +16,4 @@ include_directories("include")
 add_executable(GPIO ${SRC})
 add_dependencies(GPIO trafficlight_gpio_edl trafficlight_idl)
 
-target_link_libraries(GPIO PRIVATE common)
+target_link_libraries(GPIO PRIVATE libcommon)

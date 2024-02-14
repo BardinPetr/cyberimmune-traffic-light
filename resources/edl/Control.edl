@@ -1,1 +1,5 @@
 entity trafficlight.Control
+
+components {
+    diagnosticsInput: trafficlight.CDiagnostics
+}

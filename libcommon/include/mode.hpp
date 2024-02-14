@@ -1,5 +1,5 @@
-#ifndef TRAFFIC_LIGHT_MODE_H
-#define TRAFFIC_LIGHT_MODE_H
+#ifndef TRAFFIC_LIGHT_MODE_HPP
+#define TRAFFIC_LIGHT_MODE_HPP
 
 #include <sstream>
 #include "trafficlight/GPIO.edl.h"
@@ -20,4 +20,4 @@ std::string mode_to_string(uint32_t mode) {
     return ss.str();
 }
 
-#endif //TRAFFIC_LIGHT_MODE_H
+#endif //TRAFFIC_LIGHT_MODE_HPP

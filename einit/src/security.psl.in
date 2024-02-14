@@ -14,14 +14,17 @@ use EDL trafficlight.Link
 /*use light_modes._*/
 
 execute {
+    grant()
+    /*
     match src=kl.core.Core {
         match dst=kl.core.Core  { grant () }
         match dst=Einit         { grant () }
     }
     match src=Einit { grant () }
+    */
 }
 
-request dst=kl.core.Core { grant() }
+/*request dst=kl.core.Core { grant() }*/
 
 request { grant() }
 

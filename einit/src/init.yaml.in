@@ -7,9 +7,15 @@ entities:
 
   - name: trafficlight.GPIO
     path: GPIO
+    connections:
+      - target: trafficlight.Diagnostics
+        id: conn_gpio_diagnostics
 
   - name: trafficlight.Diagnostics
     path: Diagnostics
+    connections:
+      - target: trafficlight.Control
+        id: conn_diagnostics_control
 
   - name: trafficlight.Link
     path: Link
