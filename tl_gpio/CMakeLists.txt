@@ -13,7 +13,8 @@ nk_build_edl_files(
 file(GLOB SRC CONFIGURE_DEPENDS "**/*.cpp" "**/*.h")
 include_directories("include")
 
-add_executable(GPIO ${SRC})
+add_executable(GPIO ${SRC}
+        src/LightModeController.hpp)
 add_dependencies(GPIO trafficlight_gpio_edl trafficlight_idl)
 
 target_link_libraries(GPIO PRIVATE libcommon)

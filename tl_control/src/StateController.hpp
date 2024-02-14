@@ -2,14 +2,33 @@
 #include "trafficlight/Control.edl.h"
 #include "ILightMode.idl.hpp"
 #include "XNkKosTransport.hpp"
+#include "mode.hpp"
 #include "log.hpp"
 
 using namespace trafficlight;
+using CDM = ILightMode::CrossedDirectionsMode;
+
+const CDM MODE_SEQ[]{
+        CDM{Green, Red},
+        CDM{Green | Blink, Red},
+        CDM{Yellow, Red},
+        CDM{Red, Red},
+        CDM{Red, Red | Yellow},
+        CDM{Red, Green},
+        CDM{Red, Green | Blink},
+        CDM{Red, Yellow},
+        CDM{Red, Red},
+        CDM{Red | Yellow, Red},
+};
+const size_t MODE_SEQ_SIZE = sizeof(MODE_SEQ) / sizeof(CDM);
 
 class StateController {
 private:
     XNkKosTransport transport;
     ILightMode *gpio;
+
+    size_t curMode = 0;
+
 public:
     StateController() {
         if (!transport.connect("conn_control_gpio")) {
@@ -26,10 +45,11 @@ public:
     void start() {
         L::info("Control thread started");
 
-        ILightMode::CrossedDirectionsMode m{2, 4};
+        CDM m{2, 4};
         while (true) {
-            gpio->SetMode(m);
-            KosThreadSleep(1000);
+            gpio->SetMode(MODE_SEQ[curMode]);
+            curMode = (curMode + 1) % MODE_SEQ_SIZE;
+            KosThreadSleep(2000);
         }
     }
 };

@@ -8,5 +8,6 @@ include_directories("./include")
 add_library(libxnk
         include/NkArena.hpp
         include/XNkKosTransport.hpp
+        include/XNkKosTransportServer.hpp
 )
 set_target_properties(libxnk PROPERTIES LINKER_LANGUAGE CXX)

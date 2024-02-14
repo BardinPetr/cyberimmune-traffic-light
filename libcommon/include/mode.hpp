@@ -5,19 +5,29 @@
 #include "trafficlight/GPIO.edl.h"
 #include "trafficlight/ILightMode.idl.h"
 
-const std::pair<uint32_t, char> types[] = {
-        {trafficlight_ILightMode_ModeRed,    'R'},
-        {trafficlight_ILightMode_ModeYellow, 'Y'},
-        {trafficlight_ILightMode_ModeGreen,  'G'},
-        {trafficlight_ILightMode_ModeBlink,  'B'},
-};
+namespace trafficlight {
+    enum ModeType {
+        Red = trafficlight_ILightMode_ModeRed,
+        Yellow = trafficlight_ILightMode_ModeYellow,
+        Green = trafficlight_ILightMode_ModeGreen,
+        Blink = trafficlight_ILightMode_ModeBlink,
+    };
 
-std::string mode_to_string(uint32_t mode) {
-    std::stringstream ss;
-    for (auto [mask, name]: types)
-        ss << (mode & mask ? name : '-');
-    ss << (mode & (trafficlight_ILightMode_ModeYellow | trafficlight_ILightMode_ModeGreen) ? "|^" : "|x");
-    return ss.str();
+    const std::pair<uint32_t, char> types[] = {
+            {Red,    'R'},
+            {Yellow, 'Y'},
+            {Green,  'G'},
+            {Blink,  'B'},
+    };
+
+    std::string mode_to_string(uint32_t mode) {
+        std::stringstream ss;
+        for (auto [mask, name]: types)
+            ss << (mode & mask ? name : '-');
+        ss << (mode & (Yellow | Green) ? "|^" : "|x");
+        return ss.str();
+    }
 }
+
 
 #endif //TRAFFIC_LIGHT_MODE_HPP

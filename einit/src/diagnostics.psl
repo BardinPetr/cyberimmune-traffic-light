@@ -1,0 +1,17 @@
+request
+    src=trafficlight.GPIO,
+    dst=trafficlight.Diagnostics,
+    component=trafficlight.CTargetState,
+    interface=trafficlight.ITargetState {
+
+    grant()
+}
+
+request
+    src=trafficlight.Diagnostics,
+    dst=trafficlight.Control,
+    component=trafficlight.CDiagnostics,
+    interface=trafficlight.IDiagnostics {
+
+    grant()
+}
