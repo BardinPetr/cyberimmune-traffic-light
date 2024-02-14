@@ -8,6 +8,7 @@
 #include <coresrv/sl/sl_api.h>
 #include <coresrv/nk/transport-kos.h>
 #include <vector>
+#include <string>
 #include "trafficlight/IDiagnostics.idl.h"
 #include "XNkArena.hpp"
 #include "trafficlight/ILightMode.idl.h"
@@ -19,8 +20,8 @@ namespace trafficlight {
     private:
         NkKosTransport *transport;
         nk_iid_t riid;
-        XNkArena<trafficlight_IDiagnostics_req_arena_size> reqArena;
-        XNkArena<trafficlight_IDiagnostics_res_arena_size> resArena;
+        XNkArena <trafficlight_IDiagnostics_req_arena_size> reqArena;
+        XNkArena <trafficlight_IDiagnostics_res_arena_size> resArena;
     public:
 
         using ModeType = trafficlight_ILightMode_ModeType;
@@ -42,11 +43,11 @@ namespace trafficlight {
         IDiagnostics(NkKosTransport *transport, const char *endpoint_name);
 
         const trafficlight_IDiagnostics_NotifyFailure_res *
-        NotifyFailure(const vector<nk_uint8_t> &severity, nk_uint8_t id, nk_uint32_t requested,
+        NotifyFailure(const std::string &severity, nk_uint8_t id, nk_uint32_t requested,
                       const DirectionColor &problem);
 
         const trafficlight_IDiagnostics_NotifyState_res *
-        NotifyState(nk_uint8_t id, const vector<nk_uint32_t> &measured);
+        NotifyState(nk_uint8_t id, const vector<nk_uint32_t>& measured);
     };
 };
 #endif //TRAFFICLIGHT_IDIAGNOSTICS_IDL_HPP

@@ -19,11 +19,16 @@ public:
             const nk_arena *reqArena,
             trafficlight_IDiagnostics_NotifyState_res *res,
             nk_arena *resArena) {
-        L::info("LED Currents of ID{}", req->id);
+        nk_uint32_t cnt;
+        nk_uint32_t *severity = nk_arena_get(nk_uint32_t, reqArena, &req->measured, &cnt);
 
-//        L::info("LED Currents of ID{} is R:{}, Y:{}, G:{}",
-//                req->id,
-//                req->measured[0], req->measured[1], req->measured[2]);
+        if (cnt != 3)
+            return NK_EINVAL;
+
+        L::info("LED Currents of ID{} is R:{}mA, Y:{}mA, G:{}mA",
+                req->id,
+                severity[0], severity[1], severity[2]);
+
         return NK_EOK;
     }
 
@@ -33,12 +38,14 @@ public:
             const nk_arena *reqArena,
             trafficlight_IDiagnostics_NotifyFailure_res *res,
             nk_arena *resArena) {
+        nk_uint32_t str_len;
+        nk_char_t *severity = nk_arena_get(nk_char_t, reqArena, &req->severity, &str_len);
 
-        L::error("{} failure of ID{} for mode {} got problems: R:{}, Y:{}, G:{}",
-                "",
-                req->id,
-                mode_to_string(req->requested),
-                req->problem.r, req->problem.y, req->problem.g);
+        L::error("[{}] failure of ID{} for mode {} got problems: R:{}, Y:{}, G:{}",
+                 severity,
+                 req->id,
+                 mode_to_string(req->requested),
+                 req->problem.r, req->problem.y, req->problem.g);
 
         return NK_EOK;
     }
