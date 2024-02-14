@@ -45,7 +45,6 @@ public:
     void start() {
         L::info("Control thread started");
 
-        CDM m{2, 4};
         while (true) {
             gpio->SetMode(MODE_SEQ[curMode]);
             curMode = (curMode + 1) % MODE_SEQ_SIZE;

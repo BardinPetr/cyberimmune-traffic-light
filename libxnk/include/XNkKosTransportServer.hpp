@@ -28,8 +28,8 @@ private:
     Entity *entity;
     Request req{};
     Response res{};
-    NkArena<req_arena_size> req_arena{};
-    NkArena<res_arena_size> res_arena{};
+    XNkArena<req_arena_size> req_arena{};
+    XNkArena<res_arena_size> res_arena{};
 
 public:
     explicit XNkKosTransportServer(Entity *entity) : XNkKosTransport(), entity(entity) {

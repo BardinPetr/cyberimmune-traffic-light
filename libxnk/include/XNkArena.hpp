@@ -1,15 +1,15 @@
-#ifndef TRAFFIC_LIGHT_NKARENA_HPP
-#define TRAFFIC_LIGHT_NKARENA_HPP
+#ifndef TRAFFIC_LIGHT_XNKARENA_HPP
+#define TRAFFIC_LIGHT_XNKARENA_HPP
 
 #include <coresrv/sl/sl_api.h>
 #include <coresrv/nk/transport-kos.h>
 
 template<int size>
-class NkArena : public nk_arena {
+class XNkArena : public nk_arena {
 private:
     nk_uint8_t buffer[size]{};
 public:
-    explicit NkArena() : nk_arena() {
+    explicit XNkArena() : nk_arena() {
         start = &buffer;
         current = &buffer;
         end = &buffer + size;
@@ -20,4 +20,4 @@ public:
     }
 };
 
-#endif //TRAFFIC_LIGHT_NKARENA_HPP
+#endif //TRAFFIC_LIGHT_XNKARENA_HPP

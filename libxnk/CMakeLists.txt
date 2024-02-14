@@ -6,7 +6,7 @@ include(platform/nk)
 include_directories("./include")
 
 add_library(libxnk
-        include/NkArena.hpp
+        include/XNkArena.hpp
         include/XNkKosTransport.hpp
         include/XNkKosTransportServer.hpp
 )

@@ -9,7 +9,7 @@
 #include <coresrv/nk/transport-kos.h>
 #include <vector>
 #include "trafficlight/IDiagnostics.idl.h"
-#include "NkArena.hpp"
+#include "XNkArena.hpp"
 #include "trafficlight/ILightMode.idl.h"
 
 namespace trafficlight {
@@ -19,8 +19,8 @@ namespace trafficlight {
     private:
         NkKosTransport *transport;
         nk_iid_t riid;
-        NkArena<trafficlight_IDiagnostics_req_arena_size> reqArena;
-        NkArena<trafficlight_IDiagnostics_res_arena_size> resArena;
+        XNkArena<trafficlight_IDiagnostics_req_arena_size> reqArena;
+        XNkArena<trafficlight_IDiagnostics_res_arena_size> resArena;
     public:
 
         using ModeType = trafficlight_ILightMode_ModeType;

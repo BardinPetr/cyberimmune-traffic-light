@@ -8,7 +8,7 @@
 #include <coresrv/nk/transport-kos.h>
 #include <vector>
 #include "trafficlight/ILightMode.idl.h"
-#include "NkArena.hpp"
+#include "XNkArena.hpp"
 
 namespace trafficlight {
     using std::vector;
@@ -16,8 +16,8 @@ namespace trafficlight {
     private:
         NkKosTransport *transport;
         nk_iid_t riid;
-        NkArena<trafficlight_ILightMode_req_arena_size> reqArena;
-        NkArena<trafficlight_ILightMode_res_arena_size> resArena;
+        XNkArena<trafficlight_ILightMode_req_arena_size> reqArena;
+        XNkArena<trafficlight_ILightMode_res_arena_size> resArena;
     public:
     
         using ModeType = trafficlight_ILightMode_ModeType;

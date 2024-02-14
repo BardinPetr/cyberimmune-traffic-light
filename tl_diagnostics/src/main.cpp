@@ -1,7 +1,7 @@
 #include "trafficlight/Diagnostics.edl.h"
 #include "IDiagnostics.idl.hpp"
 #include "XNkKosTransportServer.hpp"
-#include "DiagnosticsController.h"
+#include "DiagnosticsController.hpp"
 #include "log.hpp"
 
 using EntityDiagnosticServer = XNK_SERVER(trafficlight_Diagnostics_entity);

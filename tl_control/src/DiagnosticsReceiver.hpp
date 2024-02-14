@@ -34,8 +34,8 @@ public:
             trafficlight_IDiagnostics_NotifyFailure_res *res,
             nk_arena *resArena) {
 
-        L::info("{} failure of ID{} for mode {} got problems: R:{}, Y:{}, G{}",
-                "TODO",
+        L::error("{} failure of ID{} for mode {} got problems: R:{}, Y:{}, G:{}",
+                "",
                 req->id,
                 mode_to_string(req->requested),
                 req->problem.r, req->problem.y, req->problem.g);

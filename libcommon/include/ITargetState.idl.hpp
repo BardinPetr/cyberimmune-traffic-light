@@ -8,15 +8,15 @@
 #include <coresrv/nk/transport-kos.h>
 #include <vector>
 #include "trafficlight/ITargetState.idl.h"
-#include "NkArena.hpp"
+#include "XNkArena.hpp"
 namespace trafficlight {
     using std::vector;
     class ITargetState {
     private:
         NkKosTransport *transport;
         nk_iid_t riid;
-        NkArena<trafficlight_ITargetState_req_arena_size> reqArena;
-        NkArena<trafficlight_ITargetState_res_arena_size> resArena;
+        XNkArena<trafficlight_ITargetState_req_arena_size> reqArena;
+        XNkArena<trafficlight_ITargetState_res_arena_size> resArena;
     public:
     
         using ModeType = nk_uint32_t;
@@ -27,7 +27,7 @@ namespace trafficlight {
         };
         ITargetState(NkKosTransport *transport, nk_iid_t riid);
         ITargetState(NkKosTransport *transport, const char* endpoint_name);
-    
+
         const trafficlight_ITargetState_NotifyCurrentState_res* NotifyCurrentState(nk_uint8_t id, nk_uint32_t mode);
     };
 };

@@ -1,20 +1,35 @@
-#ifndef TRAFFIC_LIGHT_DIAGNOSTICSCONTROLLER_H
-#define TRAFFIC_LIGHT_DIAGNOSTICSCONTROLLER_H
+#ifndef TRAFFIC_LIGHT_DIAGNOSTICSCONTROLLER_HPP
+#define TRAFFIC_LIGHT_DIAGNOSTICSCONTROLLER_HPP
 
+#include <random>
 #include "trafficlight/Diagnostics.edl.h"
 #include "log.hpp"
 #include "XNkKosTransport.hpp"
 #include "IDiagnostics.idl.hpp"
 #include "mode.hpp"
 #include "XNkKosTransportServer.hpp"
+#include <fmt/ranges.h>
 
 using namespace trafficlight;
+using namespace std;
 
 
 class DiagnosticsController : public trafficlight_ITargetState {
 private:
     XNkKosTransport controlTransport;
     IDiagnostics *notifier;
+
+    static nk_uint32_t rand_int() {
+        return rand() % 100;
+    }
+
+    static vector<nk_uint32_t> getCurrents() {
+        return {rand_int(), rand_int(), rand_int()};
+    }
+
+    static bool isError(bool requestedOn, nk_uint32_t current) {
+        return requestedOn ^ (current > 20);
+    }
 
 public:
     explicit DiagnosticsController() : trafficlight_ITargetState() {
@@ -40,16 +55,20 @@ public:
             const nk_arena *reqArena,
             trafficlight_ITargetState_NotifyCurrentState_res *res,
             nk_arena *resArena) {
-        L::info("Current mode of ID{} is {}", req->id, mode_to_string(req->mode));
-
-        vector<nk_uint32_t> v;
         auto notifier = static_cast<DiagnosticsController *>(self)->notifier;
 
-        notifier->NotifyState(0, v);
+        vector<nk_uint32_t> currents = getCurrents();
+        L::info("Current mode of ID{} is {}. Got currents for LED: {}", req->id, mode_to_string(req->mode), currents);
 
-        if (true) {
+        notifier->NotifyState(req->id, currents);
+
+        IDiagnostics::DirectionColor err{
+                isError(req->mode & Red, currents[0]),
+                isError(req->mode & Yellow, currents[1]),
+                isError(req->mode & Green, currents[2])
+        };
+        if (err.r || err.y || err.g) {
             vector<nk_uint8_t> v2;
-            IDiagnostics::DirectionColor err{1, 0, 1};
             notifier->NotifyFailure(v2, 0, req->mode, err);
         }
 
@@ -57,4 +76,4 @@ public:
     }
 };
 
-#endif //TRAFFIC_LIGHT_DIAGNOSTICSCONTROLLER_H
+#endif //TRAFFIC_LIGHT_DIAGNOSTICSCONTROLLER_HPP

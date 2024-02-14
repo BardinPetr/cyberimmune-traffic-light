@@ -10,7 +10,7 @@ nk_build_edl_files(
 )
 
 add_executable(Diagnostics "src/main.cpp"
-        src/DiagnosticsController.h)
+        src/DiagnosticsController.hpp)
 add_dependencies(Diagnostics diagnostics_edl_files trafficlight_idl)
 
 target_link_libraries(Diagnostics PRIVATE libcommon)
