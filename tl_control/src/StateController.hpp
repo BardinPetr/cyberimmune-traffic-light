@@ -9,16 +9,16 @@ using namespace trafficlight;
 using CDM = ILightMode::CrossedDirectionsMode;
 
 const CDM MODE_SEQ[]{
-        CDM{Green, Red},
-        CDM{Green | Blink, Red},
-        CDM{Yellow, Red},
-        CDM{Red, Red},
-        CDM{Red, Red | Yellow},
-        CDM{Red, Green},
-        CDM{Red, Green | Blink},
-        CDM{Red, Yellow},
-        CDM{Red, Red},
-        CDM{Red | Yellow, Red},
+        {Green, Red},
+        {Green | Blink, Red},
+        {Yellow, Red},
+        {Red, Red},
+        {Red, Red | Yellow},
+        {Red, Green},
+        {Red, Green | Blink},
+        {Red, Yellow},
+        {Red, Red},
+        {Red | Yellow, Red},
 };
 const size_t MODE_SEQ_SIZE = sizeof(MODE_SEQ) / sizeof(CDM);
 
