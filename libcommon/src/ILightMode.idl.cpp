@@ -4,17 +4,20 @@
  */
 #include <spdlog/spdlog.h>
 #include "ILightMode.idl.hpp"
+
 trafficlight::ILightMode::ILightMode(NkKosTransport *transport, nk_iid_t riid) : transport(transport), riid(riid) {
 }
+
 trafficlight::ILightMode::ILightMode(NkKosTransport *transport, const char *endpoint_name) : transport(transport) {
     riid = ServiceLocatorGetRiid(transport->handle, endpoint_name);
     if (INVALID_RIID == riid) {
         spdlog::error("Service RIID {} not found", endpoint_name);
     }
 }
-    const trafficlight_ILightMode_SetMode_res* trafficlight::ILightMode::SetMode(const CrossedDirectionsMode& mode) {
-        trafficlight_ILightMode_SetMode_req req{
-            {}, mode
+
+nk_err_t trafficlight::ILightMode::SetMode(const CrossedDirectionsMode &in_mode) {
+    trafficlight_ILightMode_SetMode_req req{
+            {}, in_mode
     };
     static trafficlight_ILightMode_SetMode_res res{};
     reqArena.reset();
@@ -39,13 +42,13 @@ trafficlight::ILightMode::ILightMode(NkKosTransport *transport, const char *endp
             &res,
             trafficlight_ILightMode_SetMode_res_handles
     );
+
     nk_err_t rc = nk_transport_call(
             &this->transport->base,
             &req.base_,
-            nullptr,
+            &reqArena,
             &res.base_,
-            nullptr
+            &resArena
     );
-    
-    return &res;
-    }
+    return rc;
+}

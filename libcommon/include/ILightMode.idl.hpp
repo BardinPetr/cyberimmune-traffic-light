@@ -7,10 +7,11 @@
 
 #include <coresrv/sl/sl_api.h>
 #include <coresrv/nk/transport-kos.h>
+#include <rtl/string.h>
+#include <string>
 #include <vector>
-#include "XNkArena.hpp"
-#include "trafficlight/GPIO.edl.h"
 #include "trafficlight/ILightMode.idl.h"
+#include "XNkArena.hpp"
 
 namespace trafficlight {
     using std::vector;
@@ -36,7 +37,7 @@ namespace trafficlight {
 
         ILightMode(NkKosTransport *transport, const char *endpoint_name);
 
-        const trafficlight_ILightMode_SetMode_res *SetMode(const CrossedDirectionsMode &mode);
+        nk_err_t SetMode(const CrossedDirectionsMode &in_mode);
     };
 };
 #endif //TRAFFICLIGHT_ILIGHTMODE_IDL_HPP

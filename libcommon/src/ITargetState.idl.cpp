@@ -15,10 +15,9 @@ trafficlight::ITargetState::ITargetState(NkKosTransport *transport, const char *
     }
 }
 
-const trafficlight_ITargetState_NotifyCurrentState_res *
-trafficlight::ITargetState::NotifyCurrentState(nk_uint8_t id, nk_uint32_t mode) {
+nk_err_t trafficlight::ITargetState::NotifyCurrentState(nk_uint8_t in_id, nk_uint32_t in_mode) {
     trafficlight_ITargetState_NotifyCurrentState_req req{
-            {}, id, mode
+            {}, in_id, in_mode
     };
     static trafficlight_ITargetState_NotifyCurrentState_res res{};
     reqArena.reset();
@@ -43,13 +42,13 @@ trafficlight::ITargetState::NotifyCurrentState(nk_uint8_t id, nk_uint32_t mode) 
             &res,
             trafficlight_ITargetState_NotifyCurrentState_res_handles
     );
+
     nk_err_t rc = nk_transport_call(
             &this->transport->base,
             &req.base_,
-            nullptr,
+            &reqArena,
             &res.base_,
-            nullptr
+            &resArena
     );
-
-    return &res;
+    return rc;
 }
