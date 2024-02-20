@@ -43,8 +43,8 @@ public:
         };
         this->ops = &impl_ops;
 
-        if (!controlTransport.connect("conn_diagnostics_control")) {
-            L::error("Could not find connection conn_diagnostics_control");
+        if (!controlTransport.connect("conn_control")) {
+            L::error("Could not find connection conn_control");
             exit(1);
         }
         notifier = new IDiagnostics(&controlTransport, "diagnosticsInput.diag");

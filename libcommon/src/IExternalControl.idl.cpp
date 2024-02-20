@@ -176,3 +176,114 @@ trafficlight::IExternalControl::IExternalControl(NkKosTransport *transport, cons
     );
     return rc;
     }
+    nk_err_t trafficlight::IExternalControl::GetStatus() {
+        trafficlight_IExternalControl_GetStatus_req req{
+            {}, 
+    };
+    static trafficlight_IExternalControl_GetStatus_res res{};
+    reqArena.reset();
+    resArena.reset();
+    nk_req_reset(&req);
+    nk_req_reset(&res);
+    nk_msg_set_method_id(
+            &req,
+            this->riid,
+            trafficlight_IExternalControl_GetStatus_mid
+    );
+    nk_msg_set_method_id(
+            &res,
+            this->riid,
+            trafficlight_IExternalControl_GetStatus_mid
+    );
+    nk_msg_set_ncaps(
+            &req,
+            trafficlight_IExternalControl_GetStatus_req_handles
+    );
+    nk_msg_set_ncaps(
+            &res,
+            trafficlight_IExternalControl_GetStatus_res_handles
+    );
+    
+    nk_err_t rc = nk_transport_call(
+            &this->transport->base,
+            &req.base_,
+            &reqArena,
+            &res.base_,
+            &resArena
+    );
+    return rc;
+    }
+    nk_err_t trafficlight::IExternalControl::GetMode(nk_uint8_t in_id) {
+        trafficlight_IExternalControl_GetMode_req req{
+            {}, in_id
+    };
+    static trafficlight_IExternalControl_GetMode_res res{};
+    reqArena.reset();
+    resArena.reset();
+    nk_req_reset(&req);
+    nk_req_reset(&res);
+    nk_msg_set_method_id(
+            &req,
+            this->riid,
+            trafficlight_IExternalControl_GetMode_mid
+    );
+    nk_msg_set_method_id(
+            &res,
+            this->riid,
+            trafficlight_IExternalControl_GetMode_mid
+    );
+    nk_msg_set_ncaps(
+            &req,
+            trafficlight_IExternalControl_GetMode_req_handles
+    );
+    nk_msg_set_ncaps(
+            &res,
+            trafficlight_IExternalControl_GetMode_res_handles
+    );
+    
+    nk_err_t rc = nk_transport_call(
+            &this->transport->base,
+            &req.base_,
+            &reqArena,
+            &res.base_,
+            &resArena
+    );
+    return rc;
+    }
+    nk_err_t trafficlight::IExternalControl::GetErrors(nk_uint8_t in_id) {
+        trafficlight_IExternalControl_GetErrors_req req{
+            {}, in_id
+    };
+    static trafficlight_IExternalControl_GetErrors_res res{};
+    reqArena.reset();
+    resArena.reset();
+    nk_req_reset(&req);
+    nk_req_reset(&res);
+    nk_msg_set_method_id(
+            &req,
+            this->riid,
+            trafficlight_IExternalControl_GetErrors_mid
+    );
+    nk_msg_set_method_id(
+            &res,
+            this->riid,
+            trafficlight_IExternalControl_GetErrors_mid
+    );
+    nk_msg_set_ncaps(
+            &req,
+            trafficlight_IExternalControl_GetErrors_req_handles
+    );
+    nk_msg_set_ncaps(
+            &res,
+            trafficlight_IExternalControl_GetErrors_res_handles
+    );
+    
+    nk_err_t rc = nk_transport_call(
+            &this->transport->base,
+            &req.base_,
+            &reqArena,
+            &res.base_,
+            &resArena
+    );
+    return rc;
+    }

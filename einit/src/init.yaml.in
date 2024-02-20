@@ -15,14 +15,14 @@ entities:
   path: Diagnostics
   connections:
     - target: trafficlight.Control
-      id: conn_diagnostics_control
+      id: conn_control
 
 - name: trafficlight.Link
   env:
     VFS_NETWORK_BACKEND: client:kl.VfsNet
   connections:
   - target: trafficlight.Control
-    id: conn_link_control
+    id: conn_control
   - target: kl.VfsNet
     id: kl.VfsNet
 @INIT_link_ENTITY_CONNECTIONS+@

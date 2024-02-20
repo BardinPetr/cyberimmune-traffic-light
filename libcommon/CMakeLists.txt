@@ -9,9 +9,11 @@ add_library(libcommon
         src/ILightMode.idl.cpp
         src/ITargetState.idl.cpp
         src/IDiagnostics.idl.cpp
+        src/IExternalControl.idl.cpp
         include/ILightMode.idl.hpp
         include/ITargetState.idl.hpp
         include/IDiagnostics.idl.hpp
+        include/IExternalControl.idl.hpp
         include/mode.hpp
 )
 

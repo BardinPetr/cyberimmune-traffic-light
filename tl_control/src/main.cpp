@@ -6,6 +6,13 @@
 
 using EntityControlServer = XNK_SERVER(trafficlight_Control_entity);
 
+StateController controller;
+
+void *start_controller(void *ctx) {
+    controller.start();
+    return nullptr;
+}
+
 int main() {
     init_logging("TL|CT");
 
@@ -13,22 +20,22 @@ int main() {
     pthread_t ctrl_tid;
     pthread_attr_t t_attr;
     pthread_attr_init(&t_attr);
-//    pthread_create(&ctrl_tid, &t_attr, start_controller, nullptr);
+    pthread_create(&ctrl_tid, &t_attr, start_controller, nullptr);
 
     // Launch diagnostics receiver
-    DiagnosticsReceiver receiver;
+    DiagnosticsReceiver receiver(controller);
     trafficlight_CDiagnostics_component mode_comp;
     trafficlight_CDiagnostics_component_init(&mode_comp, &receiver);
 
     trafficlight_CExternalControl_component ext_comp;
-    trafficlight_CExternalControl_component_init(&ext_comp, nullptr, nullptr);
+    trafficlight_CExternalControl_component_init(&ext_comp, &controller);
 
     trafficlight_Control_entity entity;
-    trafficlight_Control_entity_init(&entity, &mode_comp, nullptr);
+    trafficlight_Control_entity_init(&entity, &mode_comp, &ext_comp);
 
     EntityControlServer transport(&entity);
-    if (!transport.serve("conn_diagnostics_control")) {
-        L::error("Failed to register conn_control_gpio");
+    if (!transport.serve("conn_control")) {
+        L::error("Failed to register conn_control");
         exit(1);
     }
 

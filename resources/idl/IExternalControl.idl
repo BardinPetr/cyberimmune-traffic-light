@@ -12,6 +12,12 @@ struct ProgramStep {
     UInt64 workTimeSeconds;
 }
 
+struct DirectionError {
+    UInt8 r;
+    UInt8 y;
+    UInt8 g;
+}
+
 typedef sequence<ProgramStep, 100> Program;
 
 interface {
@@ -19,4 +25,7 @@ interface {
     SetManualMode(in UInt8 enable);
     EnterMode(in ModeType dir1, in ModeType dir2);
     SetModeTable(in Program prog);
+    GetStatus(out UInt8 maintenance, out UInt8 manual);
+    GetMode(in UInt8 id, out ModeType mode);
+    GetErrors(in UInt8 id, out string<20> severity, out DirectionError errors);
 }

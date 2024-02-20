@@ -15,3 +15,11 @@ request
 
     grant()
 }
+
+request
+    src=trafficlight.Link,
+    dst=trafficlight.Control,
+    component=trafficlight.CExternalControl {
+
+    grant()
+}
