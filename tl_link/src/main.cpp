@@ -1,25 +1,23 @@
 #include "log.hpp"
-#include <kos_net.h>
-#include <boost/beast/core.hpp>
-#include <boost/beast/http.hpp>
-#include <boost/beast/version.hpp>
-#include <boost/asio/connect.hpp>
-#include <boost/asio/ip/tcp.hpp>
+#include "client.hpp"
 
-namespace beast = boost::beast;
-namespace http = beast::http;
-namespace net = boost::asio;
-using tcp = net::ip::tcp;
+using namespace std;
+
 
 int main() {
     init_logging("TL|LN");
 
     if (!wait_for_network()) {
-        L::info("Net  ERR!!");
+        L::critical("Failed to set up networking");
         return 1;
     }
-
     L::info("External network connected!");
+
+
+    ControlServerClient client("10.0.2.2", 5000);
+    cerr << client.do_get("/").value_or("ERR") << "\n";
+    cerr << client.do_get("/q").value_or("ERR") << "\n";
+    cerr << client.do_post("/q", "tewerwerwe").value_or("ERR") << "\n";
 
     return 0;
 }

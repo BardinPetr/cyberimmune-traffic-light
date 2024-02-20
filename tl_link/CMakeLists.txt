@@ -10,7 +10,9 @@ nk_build_edl_files(
 
 add_executable(
         Link
-        "src/main.cpp"
+        src/main.cpp
+        src/httpclient.hpp
+        src/client.hpp
 )
 add_dependencies(Link link_edl_files trafficlight_idl)
 
