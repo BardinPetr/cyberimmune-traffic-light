@@ -10,9 +10,10 @@ nk_build_edl_files(
 
 add_executable(
         Link
-        src/main.cpp
+        src/jsonbody.hpp
         src/httpclient.hpp
         src/client.hpp
+        src/main.cpp
 )
 add_dependencies(Link link_edl_files trafficlight_idl)
 
@@ -22,5 +23,6 @@ target_link_libraries(Link
         ${vfs_CLIENT_LIB}
         nlohmann_json::nlohmann_json
         ${Boost_LIBRARIES}
+        Boost::json
 )
 set_target_properties(Link PROPERTIES ${vfs_ENTITY}_REPLACEMENT "")

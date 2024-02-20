@@ -1,16 +1,22 @@
-#include <string>
+#ifndef TRAFFICLIGHT_HTTPCLIENT_H
+#define TRAFFICLIGHT_HTTPCLIENT_H
+
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
 #include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
+#include <boost/json.hpp>
 #include <kos_net.h>
 #include <iostream>
 #include <exception>
+#include <string>
+#include "jsonbody.hpp"
 
 namespace beast = boost::beast;
 namespace http = beast::http;
 namespace net = boost::asio;
+namespace json = boost::json;
 using tcp = net::ip::tcp;
 
 class HTTPClient {
@@ -30,8 +36,8 @@ public:
     }
 
     template<class Body>
-    std::optional<http::response<http::string_body>> do_request(const http::request<Body> &req) {
-        http::response<http::string_body> res;
+    std::optional<http::response<json_body>> do_request(const http::request<Body> &req) {
+        http::response<json_body> res;
         beast::flat_buffer buffer;
 
         try {
@@ -64,7 +70,7 @@ public:
         return req;
     }
 
-    std::optional<std::string> do_get(const std::string &target) {
+    std::optional<json::value> do_get(const std::string &target) {
         auto req = create_request<http::empty_body>(http::verb::get, target);
 
         auto res = do_request(req);
@@ -74,8 +80,9 @@ public:
         return std::nullopt;
     }
 
-    std::optional<std::string> do_post(const std::string &target, const std::string &body) {
-        auto req = create_request<http::string_body>(http::verb::post, target);
+    std::optional<json::value> do_post(const std::string &target, const json::value &body) {
+        auto req = create_request<json_body>(http::verb::post, target);
+        req.set(http::field::content_type, "application/json");
         req.body() = body;
         req.prepare_payload();
 
@@ -86,3 +93,5 @@ public:
         return std::nullopt;
     }
 };
+
+#endif // TRAFFICLIGHT_HTTPCLIENT_H

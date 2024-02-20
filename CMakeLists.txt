@@ -12,7 +12,9 @@ include(platform/nk)
 
 find_package(spdlog REQUIRED)
 find_package(nlohmann_json REQUIRED)
-find_package(Boost REQUIRED COMPONENTS system)
+#find_package(Boost REQUIRED)
+find_package(Boost COMPONENTS system json REQUIRED)
+
 
 find_package(vfs REQUIRED)
 include_directories(${vfs_INCLUDE})

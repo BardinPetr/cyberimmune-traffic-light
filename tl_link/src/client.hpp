@@ -3,7 +3,7 @@
 #include "httpclient.hpp"
 
 
-class ControlServerClient : public HTTPClient {
+class ControlServerClient : HTTPClient {
 
 public:
     ControlServerClient(const std::string &host, int port) : HTTPClient(host, port) {}
