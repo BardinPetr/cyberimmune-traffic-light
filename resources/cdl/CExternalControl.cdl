@@ -1,0 +1,6 @@
+component trafficlight.CExternalControl
+
+endpoints {
+    ctrl : trafficlight.IExternalControl
+    diag : trafficlight.IExternalDiagnostics
+}

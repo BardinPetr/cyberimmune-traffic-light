@@ -1,0 +1,52 @@
+use nk.base._
+use nk.basic._
+
+execute: kl.core.Execute
+
+use EDL Einit
+use EDL kl.core.Core
+use EDL kl.VfsRamFs
+use EDL kl.VfsSdCardFs
+use EDL kl.VfsNet
+use EDL kl.rump.Dhcpcd
+use EDL kl.drivers.SDCard
+use EDL kl.drivers.RAMDisk
+use EDL kl.drivers.BSP
+use EDL kl.drivers.GPIO
+
+use EDL trafficlight.Control
+use EDL trafficlight.GPIO
+use EDL trafficlight.Diagnostics
+use EDL trafficlight.Link
+
+
+use light_modes._
+use diagnostics._
+use network._
+
+execute {
+    match src=kl.core.Core {
+        match dst=kl.core.Core  { grant () }
+        match dst=Einit         { grant () }
+    }
+    match src=Einit { grant () }
+}
+
+
+request {
+    match dst = kl.core.Core {
+        match src = Einit                       { grant () }
+        match src = trafficlight.GPIO           { grant () }
+        match src = trafficlight.Control        { grant () }
+        match src = trafficlight.Link           { grant () }
+        match src = trafficlight.Diagnostics    { grant () }
+    }
+    match src = kl.core.Core                    { grant () }
+    match src = Einit                           { grant () }
+}
+
+error { grant() }
+
+response { grant() }
+
+security { grant() }

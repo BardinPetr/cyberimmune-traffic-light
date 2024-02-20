@@ -1,0 +1,25 @@
+request {
+    match dst = kl.core.Core {
+        match src = kl.drivers.BSP                        { grant () }
+        match src = kl.drivers.GPIO                       { grant () }
+        match src = kl.rump.Dhcpcd                        { grant () }
+        match src = kl.drivers.RAMDisk                    { grant () }
+        match src = kl.VfsNet                             { grant () }
+        match src = kl.VfsRamFs                           { grant () }
+        match src = kl.VfsSdCardFs                        { grant () }
+        match src = kl.drivers.SDCard                     { grant () }
+        match src = kl.VfsRamFs                           { grant () }
+        match src = kl.VfsRamFs                           { grant () }
+    }
+
+    match src = trafficlight.Link {
+        match dst = kl.VfsSdCardFs                        { grant () }
+        match dst = kl.VfsRamFs                           { grant () }
+        match dst = kl.VfsNet                             { grant () }
+    }
+
+    match src = kl.rump.Dhcpcd, dst = kl.VfsRamFs         { grant () }
+    match src = kl.rump.Dhcpcd, dst = kl.VfsNet           { grant () }
+    match src = kl.VfsSdCardFs, dst = kl.drivers.SDCard   { grant () }
+    match src = kl.VfsRamFs, dst = kl.drivers.RAMDisk     { grant () }
+}

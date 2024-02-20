@@ -1,5 +1,0 @@
-entity gpio_mock_driver.driver
-
-components {
-
-}

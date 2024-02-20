@@ -1,0 +1,22 @@
+package trafficlight.IExternalControl
+
+typedef UInt32 ModeType;
+
+struct CrossedDirectionsMode {
+    ModeType dir0;
+    ModeType dir1;
+}
+
+struct ProgramStep {
+    CrossedDirectionsMode modes;
+    UInt64 workTimeSeconds;
+}
+
+typedef sequence<ProgramStep, 100> Program;
+
+interface {
+    SetMaintenanceMode(in UInt8 enable);
+    SetManualMode(in UInt8 enable);
+    EnterMode(in ModeType dir1, in ModeType dir2);
+    SetModeTable(in Program prog);
+}

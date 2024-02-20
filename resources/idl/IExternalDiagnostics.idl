@@ -1,0 +1,14 @@
+package trafficlight.IExternalDiagnostics
+
+typedef UInt32 ModeType;
+
+struct DirectionError {
+    UInt8 r;
+    UInt8 y;
+    UInt8 g;
+}
+
+interface {
+    GetState(in UInt8 id, out ModeType mode);
+    GetErrors(in UInt8 id, out string<20> severity, out DirectionError errors);
+}

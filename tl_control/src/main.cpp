@@ -13,15 +13,18 @@ int main() {
     pthread_t ctrl_tid;
     pthread_attr_t t_attr;
     pthread_attr_init(&t_attr);
-    pthread_create(&ctrl_tid, &t_attr, start_controller, nullptr);
+//    pthread_create(&ctrl_tid, &t_attr, start_controller, nullptr);
 
     // Launch diagnostics receiver
     DiagnosticsReceiver receiver;
     trafficlight_CDiagnostics_component mode_comp;
     trafficlight_CDiagnostics_component_init(&mode_comp, &receiver);
 
+    trafficlight_CExternalControl_component ext_comp;
+    trafficlight_CExternalControl_component_init(&ext_comp, nullptr, nullptr);
+
     trafficlight_Control_entity entity;
-    trafficlight_Control_entity_init(&entity, &mode_comp);
+    trafficlight_Control_entity_init(&entity, &mode_comp, nullptr);
 
     EntityControlServer transport(&entity);
     if (!transport.serve("conn_diagnostics_control")) {

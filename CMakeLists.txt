@@ -1,16 +1,34 @@
 cmake_minimum_required(VERSION 3.12)
-project(traffic-light)
+project(trafficlight)
 
 set(CMAKE_CXX_STANDARD 20)
 
 include(platform)
 initialize_platform(FORCE_STATIC)
 
+include(platform/install)
+include(platform/options)
+include(platform/nk)
+
 find_package(spdlog REQUIRED)
+find_package(nlohmann_json REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system)
 
-include_directories(libcommon/include libxnk/include)
+find_package(vfs REQUIRED)
+include_directories(${vfs_INCLUDE})
+find_package(rump REQUIRED COMPONENTS DHCPCD_ENTITY)
+include_directories(${rump_INCLUDE})
+find_package(precompiled_vfs REQUIRED)
+include_directories(${precompiled_vfs_INCLUDE})
 
-#add_subdirectory(gpio_mock_driver)
+option(DHCPCD_FALLBACK "Configuration by /etc/dhcpcd.conf" OFF)
+option(DHCPCD_DYNAMIC "Configuration by /etc/dhcpcd_dynamic.config" OFF)
+option(DHCPCD_STATIC "Configuration by /etc/dhcpcd_static.config" ON)
+
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR} libcommon/include libxnk/include)
+set(RESOURCES ${CMAKE_SOURCE_DIR}/resources)
+
 add_subdirectory(resources)
 add_subdirectory(libxnk)
 add_subdirectory(libcommon)

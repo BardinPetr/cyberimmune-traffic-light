@@ -2,4 +2,5 @@ entity trafficlight.Control
 
 components {
     diagnosticsInput: trafficlight.CDiagnostics
+    externalInput: trafficlight.CExternalControl
 }

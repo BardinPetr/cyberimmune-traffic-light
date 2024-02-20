@@ -1,8 +1,6 @@
-project(Link)
+project(link)
 
 include(platform/nk)
-
-set(CMAKE_CXX_STANDARD 11)
 
 nk_build_edl_files(
         link_edl_files
@@ -10,5 +8,17 @@ nk_build_edl_files(
         EDL "${CMAKE_SOURCE_DIR}/resources/edl/Link.edl"
 )
 
-add_executable(Link "src/main.cpp")
-add_dependencies(Link link_edl_files)
+add_executable(
+        Link
+        "src/main.cpp"
+)
+add_dependencies(Link link_edl_files trafficlight_idl)
+
+target_link_libraries(Link
+        libcommon
+        rump::dhcpcd_client
+        ${vfs_CLIENT_LIB}
+        nlohmann_json::nlohmann_json
+        ${Boost_LIBRARIES}
+)
+set_target_properties(Link PROPERTIES ${vfs_ENTITY}_REPLACEMENT "")
