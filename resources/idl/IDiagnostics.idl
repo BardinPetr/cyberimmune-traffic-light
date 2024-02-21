@@ -12,5 +12,5 @@ typedef sequence<MeasuredCurrent, 3> LightsMeasuredCurrent;
 
 interface {
     NotifyFailure(in string<20> severity, in UInt8 id, in ModeType requested, in DirectionColor problem);
-    NotifyState(in UInt8 id, in LightsMeasuredCurrent measured);
+    NotifyState(in UInt8 id, in LightsMeasuredCurrent measured, in ModeType mode);
 }

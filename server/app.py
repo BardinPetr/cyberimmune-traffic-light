@@ -1,24 +1,21 @@
-from flask import Flask, request, abort
+import time
+
+from flask import Flask, request, abort, send_from_directory
 from dataclasses import asdict
 
 from models import Trafficlight, Mode, M
 from commands import *
+from utils import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 
 items = {
     111: Trafficlight()
 }
-items[111].commandQueue += [
-    # ManualCommand(False),
-    # SetModeCommand([M(''), M('')]),
-    # ProgramCommand([
-    #     ProgramStep((M('r'), M('r')), 3),
-    #     ProgramStep((M('yb'), M('yb')), 3),
-    #     ProgramStep((M('g'), M('r')), 3),
-    # ])
-]
 
+
+#######
+# TL endpoints
 
 @app.post("/status")
 def push_status():
@@ -42,6 +39,7 @@ def push_error():
         abort(404)
     tl = items[data['id']]
     tl.errors.append(data)
+    tl.errors[-1]['time'] = int(time.time())
     return {"status": "ok"}
 
 
@@ -55,6 +53,59 @@ def pull_mode(uid: int):
     return asdict(tasks.pop(0))
 
 
-@app.get("/<int:uid>")
+#######
+# User endpoints
+
+@app.route('/')
+def index():
+    return send_from_directory('static', 'index.html')
+
+
+@app.get("/status/<int:uid>")
 def get(uid: int):
-    return items[uid]
+    if uid not in items:
+        abort(404)
+    tl = items[uid]
+    return {
+        "maintenance": tl.is_maintenance,
+        "manual": tl.is_manual,
+        "modes": [print_mode(i) for i in tl.current_mode],
+        "errors": print_errors(tl.errors)
+    }
+
+
+@app.post("/maintenance/<int:uid>/<int:state>")
+def maintenance(uid, state):
+    if uid not in items:
+        abort(404)
+    items[uid].commandQueue.append(MaintenanceCommand(bool(state)))
+    return "OK"
+
+
+@app.post("/manual/<int:uid>/<int:state>")
+def manual(uid, state):
+    if uid not in items:
+        abort(404)
+    items[uid].commandQueue.append(ManualCommand(bool(state)))
+    return "OK"
+
+
+@app.post("/state/<int:uid>/<state0>/<state1>")
+def state(uid, state0, state1):
+    if uid not in items:
+        abort(404)
+    items[uid].commandQueue.append(SetModeCommand([M(state0), M(state1)]))
+    return "OK"
+
+
+@app.post("/prog/<int:uid>")
+def prog(uid):
+    if uid not in items:
+        abort(404)
+    text = request.json['code']
+    text = text.strip().split(';')
+    text = [i.strip().split('+') for i in text]
+    items[uid].commandQueue.append(ProgramCommand(
+        [ProgramStep((M(i), M(j)), 1000) for i, j in text]
+    ))
+    return "OK"

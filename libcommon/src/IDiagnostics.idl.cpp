@@ -4,21 +4,16 @@
  */
 #include <spdlog/spdlog.h>
 #include "IDiagnostics.idl.hpp"
-
 trafficlight::IDiagnostics::IDiagnostics(NkKosTransport *transport, nk_iid_t riid) : transport(transport), riid(riid) {
 }
-
 trafficlight::IDiagnostics::IDiagnostics(NkKosTransport *transport, const char *endpoint_name) : transport(transport) {
     riid = ServiceLocatorGetRiid(transport->handle, endpoint_name);
     if (INVALID_RIID == riid) {
         spdlog::error("Service RIID {} not found", endpoint_name);
     }
 }
-
-nk_err_t
-trafficlight::IDiagnostics::NotifyFailure(const std::string &in_severity, nk_uint8_t in_id, nk_uint32_t in_requested,
-                                          const DirectionColor &in_problem) {
-    trafficlight_IDiagnostics_NotifyFailure_req req{
+    nk_err_t trafficlight::IDiagnostics::NotifyFailure(const std::string& in_severity, nk_uint8_t in_id, nk_uint32_t in_requested, const DirectionColor& in_problem) {
+        trafficlight_IDiagnostics_NotifyFailure_req req{
             {}, {}, in_id, in_requested, in_problem
     };
     static trafficlight_IDiagnostics_NotifyFailure_res res{};
@@ -44,20 +39,20 @@ trafficlight::IDiagnostics::NotifyFailure(const std::string &in_severity, nk_uin
             &res,
             trafficlight_IDiagnostics_NotifyFailure_res_handles
     );
-
-    // begin arg req.severity IDLTypeString
-
-    rtl_size_t cnt_in_severity_0 = in_severity.length() + 1;
-    nk_char_t *ptr_in_severity_0 = nk_arena_alloc(
-            nk_char_t,
-            &reqArena,
-            &req.severity,
-            cnt_in_severity_0
+    
+        // begin arg req.severity IDLTypeString
+    
+        rtl_size_t cnt_in_severity_0 = in_severity.length() + 1;
+    nk_char_t* ptr_in_severity_0 = nk_arena_alloc(
+        nk_char_t,
+        &reqArena,
+        &req.severity,
+        cnt_in_severity_0
     );
     rtl_strncpy((char *) ptr_in_severity_0, (const char *) in_severity.c_str(), cnt_in_severity_0);
-
+    
     // end arg req.severity
-
+    
     nk_err_t rc = nk_transport_call(
             &this->transport->base,
             &req.base_,
@@ -65,12 +60,15 @@ trafficlight::IDiagnostics::NotifyFailure(const std::string &in_severity, nk_uin
             &res.base_,
             &resArena
     );
-    return rc;
-}
-
-nk_err_t trafficlight::IDiagnostics::NotifyState(nk_uint8_t in_id, const vector<nk_uint32_t> &in_measured) {
-    trafficlight_IDiagnostics_NotifyState_req req{
-            {}, in_id, {}
+    if(rc != rcOk)
+        return rc;
+    
+    
+    return rcOk;
+    }
+    nk_err_t trafficlight::IDiagnostics::NotifyState(nk_uint8_t in_id, const vector<nk_uint32_t>& in_measured, nk_uint32_t in_mode) {
+        trafficlight_IDiagnostics_NotifyState_req req{
+            {}, in_id, {}, in_mode
     };
     static trafficlight_IDiagnostics_NotifyState_res res{};
     reqArena.reset();
@@ -95,23 +93,23 @@ nk_err_t trafficlight::IDiagnostics::NotifyState(nk_uint8_t in_id, const vector<
             &res,
             trafficlight_IDiagnostics_NotifyState_res_handles
     );
-
-    // begin arg req.measured IDLTypeList
-
-
+    
+        // begin arg req.measured IDLTypeList
+    
+        
     rtl_size_t cnt_in_measured_0 = in_measured.size();
-
-    nk_uint32_t *ptr_in_measured_0 = nk_arena_alloc(
+    
+        nk_uint32_t* ptr_in_measured_0 = nk_arena_alloc(
             nk_uint32_t,
             &reqArena,
             &req.measured,
             cnt_in_measured_0
-    );
-    rtl_memcpy(ptr_in_measured_0, (nk_uint32_t *) in_measured.data(), cnt_in_measured_0 * sizeof(nk_uint32_t));
-
-
+        );
+        rtl_memcpy(ptr_in_measured_0, (nk_uint32_t *) in_measured.data(), cnt_in_measured_0 * sizeof(nk_uint32_t));
+    
+    
     // end arg req.measured
-
+    
     nk_err_t rc = nk_transport_call(
             &this->transport->base,
             &req.base_,
@@ -119,5 +117,9 @@ nk_err_t trafficlight::IDiagnostics::NotifyState(nk_uint8_t in_id, const vector<
             &res.base_,
             &resArena
     );
-    return rc;
-}
+    if(rc != rcOk)
+        return rc;
+    
+    
+    return rcOk;
+    }

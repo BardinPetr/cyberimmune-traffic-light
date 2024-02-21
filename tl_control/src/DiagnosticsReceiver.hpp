@@ -32,6 +32,9 @@ public:
                 req->id,
                 currents[0], currents[1], currents[2]);
 
+        static_cast<DiagnosticsReceiver *>(self)->
+                stateController.onModeChanged(req->id, req->mode);
+
         return NK_EOK;
     }
 
@@ -56,5 +59,4 @@ public:
 
         return NK_EOK;
     }
-
 };

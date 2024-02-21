@@ -4,7 +4,6 @@
 */
 #ifndef TRAFFICLIGHT_IDIAGNOSTICS_IDL_HPP
 #define TRAFFICLIGHT_IDIAGNOSTICS_IDL_HPP
-
 #include <coresrv/sl/sl_api.h>
 #include <coresrv/nk/transport-kos.h>
 #include <rtl/string.h>
@@ -12,10 +11,8 @@
 #include <vector>
 #include "trafficlight/IDiagnostics.idl.h"
 #include "XNkArena.hpp"
-
 namespace trafficlight {
     using std::vector;
-
     class IDiagnostics {
     private:
         NkKosTransport *transport;
@@ -23,29 +20,16 @@ namespace trafficlight {
         XNkArena<trafficlight_IDiagnostics_req_arena_size> reqArena;
         XNkArena<trafficlight_IDiagnostics_res_arena_size> resArena;
     public:
-
+    
         using DirectionColor = trafficlight_IDiagnostics_DirectionColor;
         using ModeType = trafficlight_IDiagnostics_ModeType;
         using MeasuredCurrent = trafficlight_IDiagnostics_MeasuredCurrent;
         using LightsMeasuredCurrent = trafficlight_IDiagnostics_LightsMeasuredCurrent;
-
-        struct NotifyFailureResponse {
-            nk_err_t status;
-
-        };
-        struct NotifyStateResponse {
-            nk_err_t status;
-
-        };
-
         IDiagnostics(NkKosTransport *transport, nk_iid_t riid);
-
-        IDiagnostics(NkKosTransport *transport, const char *endpoint_name);
-
-        nk_err_t NotifyFailure(const std::string &in_severity, nk_uint8_t in_id, nk_uint32_t in_requested,
-                               const DirectionColor &in_problem);
-
-        nk_err_t NotifyState(nk_uint8_t in_id, const vector<nk_uint32_t> &in_measured);
+        IDiagnostics(NkKosTransport *transport, const char* endpoint_name);
+    
+        nk_err_t NotifyFailure(const std::string& in_severity, nk_uint8_t in_id, nk_uint32_t in_requested, const DirectionColor& in_problem);
+        nk_err_t NotifyState(nk_uint8_t in_id, const vector<nk_uint32_t>& in_measured, nk_uint32_t in_mode);
     };
 };
 #endif //TRAFFICLIGHT_IDIAGNOSTICS_IDL_HPP

@@ -66,7 +66,7 @@ public:
         L::info("Current mode of ID{} is {}. Got currents for LED: {} (mA)",
                 req->id, mode_to_string(req->mode), currents);
 
-        notifier->NotifyState(req->id, currents);
+        notifier->NotifyState(req->id, currents, req->mode);
 
         IDiagnostics::DirectionColor err{
                 isError(req->mode & Red, currents[0]),

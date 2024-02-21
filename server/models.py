@@ -20,7 +20,7 @@ class Mode:
 class Trafficlight:
     is_maintenance: bool = False
     is_manual: bool = False
-    current_mode: Tuple[Mode, Mode] = field(default=Mode)
+    current_mode: Tuple[Mode, Mode] = field(default_factory=tuple)
     commandQueue: List[Command] = field(default_factory=list)
     errors: List = field(default_factory=list)
 

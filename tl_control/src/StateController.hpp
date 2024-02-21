@@ -39,7 +39,6 @@ private:
     };
 
     void applyMode(CDM mode) {
-        currentMode = mode;
         gpio->SetMode({mode.dir0, mode.dir1});
     }
 
@@ -203,8 +202,16 @@ public:
         }
     }
 
-    void
-    onErrorReceived(nk_uint8_t id, const std::string &severity, const trafficlight_IDiagnostics_DirectionColor color) {
+    void onErrorReceived(nk_uint8_t id,
+                         const std::string &severity,
+                         const trafficlight_IDiagnostics_DirectionColor color) {
         failures[id].push({severity, {color.r, color.y, color.g}});
+    }
+
+    void onModeChanged(nk_uint8_t id, nk_uint32_t mode) {
+        if (id == 0)
+            currentMode.dir0 = mode;
+        else
+            currentMode.dir1 = mode;
     }
 };
