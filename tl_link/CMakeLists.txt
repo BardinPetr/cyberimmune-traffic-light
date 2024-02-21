@@ -20,9 +20,7 @@ add_dependencies(Link link_edl_files trafficlight_idl)
 
 target_link_libraries(Link
         libcommon
-        rump::dhcpcd_client
         ${vfs_CLIENT_LIB}
-        nlohmann_json::nlohmann_json
         ${Boost_LIBRARIES}
         Boost::json
 )

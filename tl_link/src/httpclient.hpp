@@ -51,7 +51,7 @@ public:
                 return std::nullopt;
         }
         catch (const std::exception &e) {
-            L::error("Network error: {}", e.what());
+            L::debug("Network error: {}", e.what());
             return std::nullopt;
         }
 

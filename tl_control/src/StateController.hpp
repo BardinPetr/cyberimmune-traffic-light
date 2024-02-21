@@ -1,4 +1,6 @@
 #include <kos/thread.h>
+#include <kos/mutex.h>
+#include <queue>
 #include "trafficlight/Control.edl.h"
 #include "IExternalControl.idl.hpp"
 #include "ILightMode.idl.hpp"
@@ -10,18 +12,6 @@ using namespace trafficlight;
 using CDM = IExternalControl::CrossedDirectionsMode;
 using ProgramStep = IExternalControl::ProgramStep;
 
-//const CDM MODE_SEQ[]{
-//        {Green,         Red},
-//        {Green | Blink, Red},
-//        {Yellow,        Red},
-//        {Red,           Red},
-//        {Red,           Red | Yellow},
-//        {Red,           Green},
-//        {Red,           Green | Blink},
-//        {Red,           Yellow},
-//        {Red,           Red},
-//        {Red | Yellow,  Red},
-//};
 
 struct Failure {
     std::string severity;
@@ -37,9 +27,12 @@ private:
     bool isMaintenance = false;
     bool isManual = false;
     CDM manualMode{};
-    CDM currentMode;
+    CDM currentMode{};
 
-    vector<Failure> failures[2] = {};
+    KosMutex errorQueueMutex{};
+    KosMutex programMutex{};
+
+    std::queue<Failure> failures[2] = {};
     vector<ProgramStep> modeProgram{
             {{Green, Red},   1000},
             {{Red,   Green}, 1000},
@@ -100,11 +93,13 @@ private:
         L::warn("Requested new program for {} steps", steps);
 
         if (steps == 0)
-            return rcFail;
+            return rcOk;
 
+        KosMutexLock(&s->programMutex);
         s->modeProgram.clear();
         s->modeProgram.insert(s->modeProgram.cbegin(), prog, prog + steps);
         s->curProgramStep = 0;
+        KosMutexUnlock(&s->programMutex);
         return rcOk;
     }
 
@@ -138,12 +133,18 @@ private:
             trafficlight_IExternalControl_GetErrors_res *res,
             nk_arena *resArena) {
         auto s = static_cast<StateController *>(self);
-        auto failures = s->failures[req->id];
+
+        KosMutexLock(&s->errorQueueMutex);
+
+        auto &failures = s->failures[req->id];
         if (failures.empty()) {
             return rcFail;
         }
-        std::string severity = failures.back().severity;
-        res->errors = failures.back().err;
+        std::string severity = failures.front().severity;
+        res->errors = failures.front().err;
+        failures.pop();
+
+        KosMutexUnlock(&s->errorQueueMutex);
 
         rtl_size_t len = severity.length() + 1;
         nk_char_t *ptr = nk_arena_alloc(
@@ -174,6 +175,9 @@ public:
             exit(1);
         }
         gpio = new ILightMode(&transport, "lightModeGpio.mode");
+
+        KosMutexInit(&errorQueueMutex);
+        KosMutexInit(&programMutex);
     }
 
     ~StateController() {
@@ -189,15 +193,20 @@ public:
             } else if (isManual) {
                 applyMode(manualMode);
             } else {
+                KosMutexLock(&this->programMutex);
                 applyMode(modeProgram[curProgramStep].modes);
-                KosThreadSleep(modeProgram[curProgramStep].workTimeSeconds);
+                auto sleep = modeProgram[curProgramStep].workTimeSeconds;
+                KosMutexUnlock(&this->programMutex);
+
+                KosThreadSleep(sleep);
                 curProgramStep = (curProgramStep + 1) % modeProgram.size();
             }
             KosThreadSleep(500);
         }
     }
 
-    void onErrorReceived(nk_uint8_t id, std::string severity, const trafficlight_IDiagnostics_DirectionColor color) {
-        failures[id].push_back({severity, {color.r, color.y, color.g}});
+    void
+    onErrorReceived(nk_uint8_t id, const std::string &severity, const trafficlight_IDiagnostics_DirectionColor color) {
+        failures[id].push({severity, {color.r, color.y, color.g}});
     }
 };
