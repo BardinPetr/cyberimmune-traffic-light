@@ -4,9 +4,11 @@
 #include "IExternalControl.idl.hpp"
 #include "XNkKosTransport.hpp"
 #include "mode.hpp"
+#include "sender.hpp"
 
 using namespace std;
 using namespace trafficlight;
+
 
 int main() {
     init_logging("TL|LN");
@@ -18,7 +20,7 @@ int main() {
     L::info("External network connected!");
 
 
-    ControlServerClient client("10.0.2.2", 5000);
+    ControlServerClient client(111, "10.0.2.2", 5000);
 
     XNkKosTransport transport;
     if (!transport.connect("conn_control")) {
@@ -27,6 +29,8 @@ int main() {
     }
     IExternalControl source(&transport, "externalInput.ctrl");
 
+    Connector conn(client, source);
+    conn.run();
 
     return 0;
 }

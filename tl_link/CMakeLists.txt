@@ -14,6 +14,7 @@ add_executable(
         src/httpclient.hpp
         src/client.hpp
         src/main.cpp
+        src/sender.hpp
 )
 add_dependencies(Link link_edl_files trafficlight_idl)
 
