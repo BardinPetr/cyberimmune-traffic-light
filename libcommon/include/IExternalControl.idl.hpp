@@ -26,40 +26,6 @@ namespace trafficlight {
         using ProgramStep = trafficlight_IExternalControl_ProgramStep;
         using DirectionError = trafficlight_IExternalControl_DirectionError;
         using Program = trafficlight_IExternalControl_Program;
-    
-        struct SetMaintenanceModeResponse {
-            nk_err_t status;
-        
-        };
-        struct SetManualModeResponse {
-            nk_err_t status;
-        
-        };
-        struct EnterModeResponse {
-            nk_err_t status;
-        
-        };
-        struct SetModeTableResponse {
-            nk_err_t status;
-        
-        };
-        struct GetStatusResponse {
-            nk_err_t status;
-        
-            nk_uint8_t maintenance;
-            nk_uint8_t manual;
-        };
-        struct GetModeResponse {
-            nk_err_t status;
-        
-            nk_uint32_t mode;
-        };
-        struct GetErrorsResponse {
-            nk_err_t status;
-        
-            std::string severity;
-            DirectionError errors;
-        };
         IExternalControl(NkKosTransport *transport, nk_iid_t riid);
         IExternalControl(NkKosTransport *transport, const char* endpoint_name);
     
@@ -67,9 +33,9 @@ namespace trafficlight {
         nk_err_t SetManualMode(nk_uint8_t in_enable);
         nk_err_t EnterMode(nk_uint32_t in_dir1, nk_uint32_t in_dir2);
         nk_err_t SetModeTable(const vector<ProgramStep>& in_prog);
-        nk_err_t GetStatus();
-        nk_err_t GetMode(nk_uint8_t in_id);
-        nk_err_t GetErrors(nk_uint8_t in_id);
+        nk_err_t GetStatus(nk_uint8_t& out_maintenance, nk_uint8_t& out_manual);
+        nk_err_t GetMode(nk_uint8_t in_id, nk_uint32_t& out_mode);
+        nk_err_t GetErrors(nk_uint8_t in_id, std::string& out_severity, DirectionError& out_errors);
     };
 };
 #endif //TRAFFICLIGHT_IEXTERNALCONTROL_IDL_HPP
