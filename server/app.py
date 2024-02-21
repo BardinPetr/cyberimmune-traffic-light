@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import time
 
 from flask import Flask, request, abort, send_from_directory
@@ -109,3 +111,7 @@ def prog(uid):
         [ProgramStep((M(i), M(j)), 1000) for i, j in text]
     ))
     return "OK"
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

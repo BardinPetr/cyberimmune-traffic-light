@@ -3,6 +3,9 @@
 #include "DiagnosticsReceiver.hpp"
 #include "XNkKosTransport.hpp"
 #include "XNkKosTransportServer.hpp"
+#include "Logger.hpp"
+#include <unistd.h>
+
 
 using EntityControlServer = XNK_SERVER(trafficlight_Control_entity);
 
@@ -16,6 +19,8 @@ void *start_controller(void *ctx) {
 int main() {
     init_logging("TL|CT");
 
+    Logger logger;
+
     // Launch mode sender
     pthread_t ctrl_tid;
     pthread_attr_t t_attr;
@@ -23,7 +28,7 @@ int main() {
     pthread_create(&ctrl_tid, &t_attr, start_controller, nullptr);
 
     // Launch diagnostics receiver
-    DiagnosticsReceiver receiver(controller);
+    DiagnosticsReceiver receiver(controller, logger);
     trafficlight_CDiagnostics_component mode_comp;
     trafficlight_CDiagnostics_component_init(&mode_comp, &receiver);
 

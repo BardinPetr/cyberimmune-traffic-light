@@ -1,9 +1,15 @@
 entities:
+- task: vfs_task
+  name: kl.VfsRamFs
+  path: VfsRamFs
+
 - name: trafficlight.Control
   path: Control
   connections:
     - target: trafficlight.GPIO
       id: conn_control_gpio
+    - target: vfs_task
+      id: kl.VfsEntity
 
 - name: trafficlight.GPIO
   path: GPIO

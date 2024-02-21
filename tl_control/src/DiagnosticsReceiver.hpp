@@ -1,14 +1,16 @@
 #include "trafficlight/Control.edl.h"
 #include "mode.hpp"
+#include "Logger.hpp"
 
 
 class DiagnosticsReceiver : public trafficlight_IDiagnostics {
 private:
     StateController &stateController;
+    Logger &logger;
 
 public:
-    DiagnosticsReceiver(StateController &stateController)
-            : trafficlight_IDiagnostics(), stateController(stateController) {
+    DiagnosticsReceiver(StateController &stateController, Logger &logger)
+            : trafficlight_IDiagnostics(), stateController(stateController), logger(logger) {
         static const trafficlight_IDiagnostics_ops impl_ops = {
                 .NotifyFailure=NotifyFailure_impl,
                 .NotifyState=NotifyState_impl
@@ -32,9 +34,10 @@ public:
                 req->id,
                 currents[0], currents[1], currents[2]);
 
-        static_cast<DiagnosticsReceiver *>(self)->
-                stateController.onModeChanged(req->id, req->mode);
+        auto s = static_cast<DiagnosticsReceiver *>(self);
 
+        s->stateController.onModeChanged(req->id, req->mode);
+        s->logger.append(req->id, req->mode);
         return NK_EOK;
     }
 

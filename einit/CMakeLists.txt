@@ -32,6 +32,7 @@ endif ()
 list(APPEND ENTITIES
         rump::dhcpcd_entity
         ${precompiled_vfsVfsNet}
+        ${precompiled_vfsVfsRamFs}
         ${FS_BACKEND}
 )
 

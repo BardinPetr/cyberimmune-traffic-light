@@ -13,7 +13,6 @@ include(platform/nk)
 find_package(spdlog REQUIRED)
 find_package(Boost COMPONENTS system json REQUIRED)
 
-
 find_package(vfs REQUIRED)
 include_directories(${vfs_INCLUDE})
 find_package(rump REQUIRED COMPONENTS DHCPCD_ENTITY)
@@ -24,7 +23,7 @@ include_directories(${precompiled_vfs_INCLUDE})
 option(DHCPCD_FALLBACK "Configuration by /etc/dhcpcd.conf" OFF)
 option(DHCPCD_DYNAMIC "Configuration by /etc/dhcpcd_dynamic.config" OFF)
 option(DHCPCD_STATIC "Configuration by /etc/dhcpcd_static.config" ON)
-
+unset(ROOTFS_SDCARD CACHE)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} libcommon/include libxnk/include)
 set(RESOURCES ${CMAKE_SOURCE_DIR}/resources)

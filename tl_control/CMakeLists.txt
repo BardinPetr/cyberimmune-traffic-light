@@ -13,7 +13,8 @@ add_executable(Control
         src/main.cpp
         src/StateController.hpp
         src/DiagnosticsReceiver.hpp
+        src/Logger.hpp
 )
 add_dependencies(Control control_edl_files trafficlight_idl)
 
-target_link_libraries(Control PRIVATE libcommon)
+target_link_libraries(Control PRIVATE libcommon ${vfs_CLIENT_LIB})
