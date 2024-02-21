@@ -134,17 +134,15 @@ private:
             nk_arena *resArena) {
         auto s = static_cast<StateController *>(self);
 
-        KosMutexLock(&s->errorQueueMutex);
-
         auto &failures = s->failures[req->id];
-        if (failures.empty()) {
-            return rcFail;
+        std::string severity("OK");
+        if (!failures.empty()) {
+            KosMutexLock(&s->errorQueueMutex);
+            severity = failures.front().severity;
+            res->errors = failures.front().err;
+            failures.pop();
+            KosMutexUnlock(&s->errorQueueMutex);
         }
-        std::string severity = failures.front().severity;
-        res->errors = failures.front().err;
-        failures.pop();
-
-        KosMutexUnlock(&s->errorQueueMutex);
 
         rtl_size_t len = severity.length() + 1;
         nk_char_t *ptr = nk_arena_alloc(

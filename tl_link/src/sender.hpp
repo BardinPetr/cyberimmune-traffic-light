@@ -28,7 +28,7 @@ private:
         IExternalControl::DirectionError err;
 
         auto rc = control.GetErrors(0, severity, err);
-        if (rc != rcOk) return; // no pending errors
+        if (rc != rcOk || severity == "OK") return; // no errors
 
         api.send_error(severity, err);
     }

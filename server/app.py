@@ -51,7 +51,7 @@ def pull_mode(uid: int):
         abort(404)
     tasks = items[uid].commandQueue
     if not len(tasks):
-        abort(404)
+        return 'no data', 204
     return asdict(tasks.pop(0))
 
 
